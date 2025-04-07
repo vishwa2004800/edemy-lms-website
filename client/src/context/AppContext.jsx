@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 export const AppContext = createContext()
 
 export const AppContextProvider = (props) => {
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
+    // const backendUrl = import.meta.env.VITE_BACKEND_URL
     const currency = import.meta.env.VITE_CURRENCY
     const navigate = useNavigate()
     const { getToken } = useAuth()
@@ -20,51 +20,25 @@ export const AppContextProvider = (props) => {
     const [userData, setUserData] = useState(null)
     const [loading, setLoading] = useState(true)
 
+    // fetch all courses
     const fetchAllCourses = async () => {
         try {
-            setLoading(true)
-            const response = await axios.get(`${backendUrl}/api/course/all`)
+            // setLoading(true)
+            const {data} = await axios.get('http://localhost:5000/api/course/all')
             
-            if (response.data.success) {
-                setAllCourses(response.data.courses)
+            if (data.success) {
+                setAllCourses(data.courses)
             } else {
-                toast.error(response.data.message)
+                toast.error(data.message)
             }
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Error fetching courses")
-            console.error("Error fetching courses:", error)
-        } finally {
-            setLoading(false)
         }
-    }
+         catch (error) 
+         {
+            toast.error(error.message)
 
-    const fetchUserEnrolledCourses = async () => {
 
-        
-
-        try {
-            
-            const token = await getToken()
-            console.log("Token:", token)
-        console.log("Backend URL:", backendUrl)
-            const response = await axios.get(`${backendUrl}/api/user/enrolled-courses`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-
-            console.log("Full Response:", response)
-            console.log("Enrolled Courses:", response.data.enrolledCourses)
-
-            if (response.data.success) {
-                setEnrolledCourses(response.data.enrolledCourses)
-            } else {
-                toast.error(response.data.message)
-            }
-        } catch (error) {
-            toast.error(error.response?.data?.message || "Error fetching enrolled courses")
-            console.error("Error fetching enrolled courses:", error)
         }
+      
     }
 
     const fetchUserData = async () => {
@@ -75,23 +49,50 @@ export const AppContextProvider = (props) => {
 
         try {
             const token = await getToken()
-            const response = await axios.get(`${backendUrl}/api/user/data`, {
+            const {data} = await axios.get('http://localhost:5000/api/user/data', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
 
-            if (response.data.success) {
-                setUserData(response.data.user)
+            if (data.success) {
+                setUserData(data.user)
                 setIsEducator(user.publicMetadata.role === 'educator')
             } else {
-                toast.error(response.data.message)
+                toast.error(data.message)
             }
         } catch (error) {
-            toast.error(error.response?.data?.message || "Error fetching user data")
-            console.error("Error fetching user data:", error)
+            toast.error(error.message)
+
+           
         }
     }
+
+    const fetchUserEnrolledCourses = async () => {
+        try {
+            
+            const token = await getToken()
+            console.log("Token:", token)
+        // console.log("Backend URL:", backendUrl)
+            const {data} = await axios.get('http://localhost:5000/api/user/enrolled-courses', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            
+
+            if (data.success) {
+                setEnrolledCourses(data.enrolledCourses.reverse())
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
+   
 
     // Calculate rating for a course
     const calculateRating = (course) => {
@@ -128,14 +129,16 @@ export const AppContextProvider = (props) => {
 
     useEffect(() => {
         fetchAllCourses()
-        fetchUserEnrolledCourses()
 
     }, [])
 
     useEffect(() => {
         if (user) {
             fetchUserData()
+            fetchUserEnrolledCourses()
+
         }
+
     }, [user])
 
     const value = {
@@ -153,7 +156,8 @@ export const AppContextProvider = (props) => {
         userData,
         setUserData,
         getToken,
-        backendUrl,
+        fetchAllCourses,
+        // backendUrl,
         loading
     }
 
