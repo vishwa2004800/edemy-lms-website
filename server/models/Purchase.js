@@ -25,5 +25,5 @@ const PurchaseSchema = new mongoose.Schema(
 );
 
 // Export as ES6 module
-const Purchase = mongoose.model("Payment", PurchaseSchema);
+const Purchase = mongoose.model("Purchase", PurchaseSchema);
 export default Purchase;

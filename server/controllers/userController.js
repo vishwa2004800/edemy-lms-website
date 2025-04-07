@@ -228,6 +228,7 @@ export const purchaseCourse = async (req, res) => {
 
     // Stripe payment
     const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
+
     const currency = process.env.CURRENCY.toLowerCase();
 
     const line_items = [
@@ -252,6 +253,9 @@ export const purchaseCourse = async (req, res) => {
         purchaseId: newPurchase._id.toString(),
       },
     });
+
+    newPurchase.status = "Completed";
+    newPurchase.save();
 
     res.json({ success: true, session_url: session.url });
   } catch (error) {
