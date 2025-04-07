@@ -1,6 +1,7 @@
 import { Webhook } from "svix";
 import User from "../models/User.js";
 import Purchase from "../models/Purchase.js";
+import Stripe from "stripe";
 
 
 
@@ -71,7 +72,7 @@ export const clerkWebhooks = async (req, res) => {
 };
 
 // stripe webhook
-const stripeInstance=new Stripe(process.env.STRIPE_SECRET_KEY)
+const stripeInstance=new Stripe('sk_test_51R5jpoQTRj7mdw5VYBN50aRjDi6JqnERzUGllMzRZiVmNw8BCpj0xnzce5q4QXk4Huvy9wEM76bVmriNeYtdicD400Tv5K2Ila')
 
 export const stripeWebhooks = async (request, response) => {
     const sig = request.headers["stripe-signature"];
@@ -79,7 +80,7 @@ export const stripeWebhooks = async (request, response) => {
     let event;
 
     try {
-        event = Stripe.webhooks.constructEvent(request.body, sig, process.env.STRIPE_WEBHOOK);
+        event = Stripe.webhooks.constructEvent(request.body, sig, 'whsec_b2bZeJEvt14ICpXWBxMWQwyPzkwKJmOH');
     } catch (err) {
         return response.status(400).send(`Webhook Error: ${err.message}`);
     }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useContext } from 'react'
 import { AppContext } from '../../context/AppContext'
 import {Line} from 'rc-progress'
+
  
 const MyEnroll = () => {
 
@@ -109,7 +110,8 @@ const MyEnroll = () => {
         </tbody>
       </table>
     </div>
-    <Footer/>
+    {/* <Footer/> */}
+    {/* <Footer/> */}
     </>
   )
 }
