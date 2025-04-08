@@ -3,6 +3,8 @@ import User from "../models/User.js";
 import Course from "../models/Courses.js";
 import Purchase from "../models/Purchase.js";
 import Stripe from "stripe";
+import CourseProgress from '../models/courseProgress.js'
+// import mongoose from "mongoose";
 
 // Get user data
 export const getUserData = async (req, res) => {
@@ -84,18 +86,11 @@ export const purchaseCourse = async (req, res) => {
     newPurchase.status = "Completed";
     await newPurchase.save();
 
-    const courseObjectId = new mongoose.Types.ObjectId(courseId);
 
-    if (!userData.enrolledCourses.includes(courseObjectId)) {
-      userData.enrolledCourses.push(courseObjectId);
-      await userData.save();
-    }
-
-
-    // userData.enrolledCourses.push(courseId);
+    userData.enrolledCourses.push(courseId.toString());
     // userData.enrolledCourses.push(new mongoose.Types.ObjectId(courseId));
 
-    // await userData.save();
+    await userData.save();
 
     console.log("User enrolled courses after push:", userData.enrolledCourses);
 

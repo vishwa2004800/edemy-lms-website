@@ -9,7 +9,7 @@ import axios from 'axios'
 
 const Navbar = () => {
 
-    const {navigate, isEducator,backendUrl, setIsEducator, getToken} = useContext(AppContext)
+    const {navigate, isEducator, setIsEducator, getToken} = useContext(AppContext)
     const iscourseListPage = location.pathname.includes('/course-list'); 
 
     const {openSignIn} = useClerk()

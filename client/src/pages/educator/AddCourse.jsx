@@ -1,5 +1,3 @@
-
-
 import React, { useState, useRef, useEffect, useContext } from "react";
 import uniqid from "uniqid";
 import Quill from "quill";
@@ -144,7 +142,7 @@ const AddCourse = () => {
 
       const token = await getToken();
       const { data } = await axios.post(
-        `${backendUrl}/api/educator/add-course`,
+        `http://localhost:5000/api/educator/add-course`,
         formData,
         { headers: { Authorization: `Bearer ${token}`, 'Content-Type':"multipart/form-data" } }
       );

@@ -1,6 +1,6 @@
 
 import Course from "../models/Courses.js";
-import Purchase from "../models/Purchase.js";
+// import Purchase from "../models/Purchase.js";
 
 // Get All Courses
 export const getAllCourse = async (req, res) => {

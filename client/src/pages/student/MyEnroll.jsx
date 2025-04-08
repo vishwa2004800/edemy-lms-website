@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useContext } from 'react'
 import { AppContext } from '../../context/AppContext'
 import {Line} from 'rc-progress'
+import { toast } from 'react-toastify'
+import axios from 'axios'
+
 
  
 const MyEnroll = () => {
 
-  const {enrolledCourses, calculateCourseDuration, navigate, getToken, backendUrl,userData,
+  const {enrolledCourses, calculateCourseDuration, navigate, getToken,userData,
     fetchUserEnrolledCourses, calculateNoOfLectures
   } = useContext(AppContext)
   const [progressArray,setProgressArray] = useState([] 
@@ -17,7 +20,7 @@ const MyEnroll = () => {
       const token = await getToken()
       const tempProgressArray = await Promise.all(
         enrolledCourses.map(async (course)=>{
-          const {data} = await axios.post(`${backendUrl}/api/user/get-course-progress`,
+          const {data} = await axios.post(`http://localhost:5000/api/user/get-progress`,
             {courseId:course._id}, {headers :{Authorization:`Bearer ${token}`}}
           )
           let totalLectures = calculateNoOfLectures(course);
