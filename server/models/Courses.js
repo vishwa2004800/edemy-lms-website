@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+// import User from '../models/User'
 
 const lectureSchema = new mongoose.Schema({
     lectureId: { type: String, required: true },

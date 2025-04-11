@@ -6,6 +6,7 @@ import { UserButton,useClerk,useUser } from '@clerk/clerk-react'
 import { AppContext } from '../../context/AppContext'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+// import User from '../../../../server/models/User'
 
 const Navbar = () => {
 

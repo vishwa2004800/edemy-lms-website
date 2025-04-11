@@ -7,7 +7,7 @@ import { AppContext } from "../../context/AppContext";
 import { toast } from "react-toastify";
 
 const AddCourse = () => {
-  const { backendUrl, getToken } = useContext(AppContext);
+  const { getToken } = useContext(AppContext);
   const quillRef = useRef(null);
   const editorRef = useRef(null);
 
