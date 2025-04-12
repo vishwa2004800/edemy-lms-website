@@ -11,6 +11,7 @@ import { toast } from "react-toastify"
 import Loading from "../../components/student/Loading"
 import axios from "axios"
 import { Pencil, Save, Trash2 } from "lucide-react"
+import StudyPlanner from "../../components/student/StudyPlanner"
 
 
 const Player = () => {
@@ -345,6 +346,8 @@ const Player = () => {
             <h1 className="text-l font-bold">Rate this Course:</h1>
             <Rating initialRating={initialRating} onRate={handleRate} />
           </div>
+          <StudyPlanner/>
+
         </div>
 
         {/* right column */}
@@ -469,7 +472,9 @@ const Player = () => {
             <img src={courseData ? courseData.courseThumbnail : ""} alt="" />
           )}
         </div>
+        {/* <StudyPlanner/> */}
       </div>
+
 
       <Footer />
     </>
