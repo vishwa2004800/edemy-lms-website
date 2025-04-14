@@ -346,7 +346,10 @@ const Player = () => {
             <h1 className="text-l font-bold">Rate this Course:</h1>
             <Rating initialRating={initialRating} onRate={handleRate} />
           </div>
-          <StudyPlanner/>
+          <StudyPlanner
+          courseId={courseId}
+          currentLecture={playerData}
+          />
 
         </div>
 
@@ -472,7 +475,7 @@ const Player = () => {
             <img src={courseData ? courseData.courseThumbnail : ""} alt="" />
           )}
         </div>
-        {/* <StudyPlanner/> */}
+        
       </div>
 
 

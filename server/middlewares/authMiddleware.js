@@ -15,4 +15,13 @@ export const protectEducator = async (req, res, next) => {
         res.json({ success: false, message: error.message });
     }
 };
+// middleware/clerkAuth.js
+// import { requireAuth } from '@clerk/clerk-express';
+
+// export const clerkMiddleware = requireAuth({
+//   unauthorizedHandler: (req, res) => {
+//     return res.status(401).json({ success: false, message: 'Unauthorized' });
+//   }
+// });
+
 

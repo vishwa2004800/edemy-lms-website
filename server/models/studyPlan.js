@@ -3,10 +3,10 @@ import mongoose from 'mongoose'
 
 const studyPlanSchema = new mongoose.Schema({
   userId: {
-     String,
+     type:String,
     },
   courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true },
-  lectureId: { String },
+  lectureId: {type: mongoose.Schema.Types.ObjectId, required:true },
   scheduledDate: { type: Date, required: true },
 }, { timestamps: true })
 
