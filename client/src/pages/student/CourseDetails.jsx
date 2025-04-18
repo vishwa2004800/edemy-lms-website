@@ -1,54 +1,48 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { AppContext } from "../../context/AppContext";
-import { assets } from "../../assets/assets";
-import Footer from "../../components/student/footer";
-// import Rating from '../../components/student/Rating';
-import { toast } from "react-toastify";
-import axios from "axios";
+
+
+import { useContext, useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { AppContext } from "../../context/AppContext"
+import { assets } from "../../assets/assets"
+import Footer from "../../components/student/footer"
+// import DiscussionForum from "../../components/student/DiscussionForum"
+import DiscussionForum from "../../components/student/Discussion"
+import { toast } from "react-toastify"
+import axios from "axios"
 
 const CourseDetails = () => {
-  const { id } = useParams();
-  const {
-    currency,
-    allCourses,
-    calculateRating,
-    calculateCourseDuration,
-    calculateNoOfLectures,
-    getToken,
-    userData,
-  } = useContext(AppContext);
-  const [courseData, setCourseData] = useState(null);
-  const [isEnrolled, setIsEnrolled] = useState(false);
-  const [openSections, setOpenSections] = useState({});
-  const [playerData, setPlayerData] = useState(null);
+  const { id } = useParams()
+  const { currency, allCourses, calculateRating, calculateCourseDuration, calculateNoOfLectures, getToken, userData } =
+    useContext(AppContext)
+  const [courseData, setCourseData] = useState(null)
+  const [isEnrolled, setIsEnrolled] = useState(false)
+  const [openSections, setOpenSections] = useState({})
+  const [playerData, setPlayerData] = useState(null)
 
   const fetchCourseData = async () => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:5000/api/course/" + id
-      );
+      const { data } = await axios.get("http://localhost:5000/api/course/" + id)
 
       if (data.success) {
-        setCourseData(data.courseData);
+        setCourseData(data.courseData)
       } else {
-        toast.error(data.message);
+        toast.error(data.message)
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message)
     }
-  };
+  }
 
   const enrollCourse = async () => {
     try {
       if (!userData) {
-        return toast.warn("Login to Enroll");
+        return toast.warn("Login to Enroll")
       }
       if (isEnrolled) {
-        return toast.warn("Already Enrolled");
+        return toast.warn("Already Enrolled")
       }
 
-      const token = await getToken();
+      const token = await getToken()
       const { data } = await axios.post(
         "http://localhost:5000/api/user/purchase",
         {
@@ -56,32 +50,32 @@ const CourseDetails = () => {
         },
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+        },
+      )
       if (data.success) {
-        const { session_url } = data;
-        window.location.replace(session_url);
+        const { session_url } = data
+        window.location.replace(session_url)
       } else {
-        toast.error(data.message);
+        toast.error(data.message)
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchCourseData();
-  }, []);
+    fetchCourseData()
+  }, [])
 
   useEffect(() => {
     if (userData && courseData) {
-      setIsEnrolled(userData?.enrollCourse?.includes(courseData._id) || false);
+      setIsEnrolled(userData?.enrollCourse?.includes(courseData._id) || false)
     }
-  }, [userData, courseData]);
+  }, [userData, courseData])
 
   const toggleSection = (index) => {
-    setOpenSections((prev) => ({ ...prev, [index]: !prev[index] }));
-  };
+    setOpenSections((prev) => ({ ...prev, [index]: !prev[index] }))
+  }
 
   return courseData ? (
     <>
@@ -98,67 +92,35 @@ const CourseDetails = () => {
                 {[...Array(5)].map((_, i) => (
                   <img
                     key={i}
-                    src={
-                      i < Math.floor(calculateRating(courseData))
-                        ? assets.star
-                        : assets.star_blank
-                    }
+                    src={i < Math.floor(calculateRating(courseData)) ? assets.star : assets.star_blank}
                     alt=""
                     className="w-3.5 h-3.5"
                   />
                 ))}
               </div>
-              <p className="text-gray-500">
-                ({courseData.courseRatings.length} ratings)
-              </p>
+              <p className="text-gray-500">({courseData.courseRatings.length} ratings)</p>
             </div>
             <div className="flex items-center gap-3 text-gray-500">
               <p>{calculateNoOfLectures(courseData)} lectures</p>
               <div className="h-1 w-1 bg-gray-500 rounded-full"></div>
               <p>{calculateCourseDuration(courseData)}</p>
             </div>
-            {/* <div
-              className="flex items-center justify-between px-4 py-3 cursor-pointer select-none"
-              onClick={() => toggleSection(index)}
-            >
-              <div className="flex items-center gap-2">
-                <img
-                  src={assets.down_arrow_icon}
-                  alt=""
-                  className={`transform transition-transform ${
-                    openSections[index] ? "rotate-180" : ""
-                  }`}
-                />
-                <p className="font-medium md:text-base text-sm">
-                  {chapter.chapterTitle}
-                </p>
-              </div>
-              <p className="text-sm md:text-default">
-                {chapter.chapterContent.length} lectures -{" "}
-                {calculateChapterTime(chapter)}
-              </p>
-            </div> */}
-            <div
-              dangerouslySetInnerHTML={{ __html: courseData.courseDescription }}
-              className="rich-text"
-            ></div>
+
+            <div dangerouslySetInnerHTML={{ __html: courseData.courseDescription }} className="rich-text"></div>
+
+            {/* Discussion Forum Component */}
+            
+            <DiscussionForum courseId={courseData.id} userData={userData} getToken={getToken} />
           </div>
 
           {/* Right Column */}
           <div className="md:w-5/12 space-y-5">
-            <img
-              src={courseData.courseThumbnail}
-              alt=""
-              className="w-full rounded-lg"
-            />
+            <img src={courseData.courseThumbnail || "/placeholder.svg"} alt="" className="w-full rounded-lg" />
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <p className="text-2xl font-semibold">
                   {currency}
-                  {(
-                    courseData.coursePrice -
-                    (courseData.discount * courseData.coursePrice) / 100
-                  ).toFixed(2)}
+                  {(courseData.coursePrice - (courseData.discount * courseData.coursePrice) / 100).toFixed(2)}
                 </p>
                 <p className="line-through text-gray-500">
                   {currency}
@@ -167,10 +129,7 @@ const CourseDetails = () => {
                 <p>{courseData.discount}% off</p>
               </div>
               {!isEnrolled ? (
-                <button
-                  onClick={enrollCourse}
-                  className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700"
-                >
+                <button onClick={enrollCourse} className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700">
                   {" "}
                   Enroll Now
                 </button>
@@ -182,12 +141,10 @@ const CourseDetails = () => {
             </div>
           </div>
         </div>
-
-       
       </div>
       <Footer />
     </>
-  ) : null;
-};
+  ) : null
+}
 
-export default CourseDetails;
+export default CourseDetails

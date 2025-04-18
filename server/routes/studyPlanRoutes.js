@@ -117,7 +117,6 @@ import sendEmail from '../utils/sendEmail.js' // adjust path if needed
 
 const router = express.Router()
 
-// ✅ Add Study Plan
 router.post('/add', async (req, res) => {
   try {
     const { courseId, lectureId, scheduledDate } = req.body

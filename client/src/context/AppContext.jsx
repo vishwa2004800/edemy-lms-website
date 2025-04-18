@@ -1,5 +1,5 @@
-import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import humanizeDuration from 'humanize-duration'
 import { useAuth, useUser } from "@clerk/clerk-react"
 import axios from 'axios'
@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 export const AppContext = createContext()
 
 export const AppContextProvider = (props) => {
-    // const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const {courseId}  =useParams()
     const currency = import.meta.env.VITE_CURRENCY
     const navigate = useNavigate()
     const { getToken } = useAuth()
@@ -154,6 +154,7 @@ export const AppContextProvider = (props) => {
         enrolledCourses,
         fetchUserEnrolledCourses,
         userData,
+        // courseId,
         setUserData,
         getToken,
         fetchAllCourses,

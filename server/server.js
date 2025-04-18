@@ -10,6 +10,7 @@ import courseRouter from './routes/courseRoutes.js'
 import userRouter from './routes/userRoutes.js'
 import noteRoutes from "./routes/noteRoutes.js"
 import studyPlanRoutes from "./routes/studyPlanRoutes.js"
+import discussionRouter from './routes/discussionRoutes.js'
 
 
 
@@ -41,6 +42,7 @@ app.use('/api/course', express.json(),courseRouter)
 app.use('/api/user', express.json(), userRouter)
 app.use("/api/notes", express.json(),noteRoutes)
 app.use('/api/study-plan', express.json(),studyPlanRoutes)
+app.use('/api/discussions',express.json(),discussionRouter)
 
 
 
